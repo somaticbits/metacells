@@ -12,8 +12,12 @@ if False:
 	# noinspection PyUnresolvedReferences
 	from _stubs import *
 
+# global variables for base_layer_0
 table_pars = op('table_pars')
 table_pars_mapped = op('table_pars_mapped')
+
+# load module
+common = mod('../common')
 
 def onOffToOn(channel, sampleIndex, val, prev):
 	return
@@ -28,21 +32,6 @@ def whileOff(channel, sampleIndex, val, prev):
 	return
 
 def onValueChange(channel, sampleIndex, val, prev):
-	for index in range(table_pars.numRows - 1):
-		if channel.name == table_pars[index,'par_name']:
-			table_pars_mapped[index - 1,0] = table_pars[index,'par_name']
-			table_pars_mapped[index - 1,1] = mapRange(val, 0, 1, table_pars[index,'min'], table_pars[index,'max'])
-
 	return
 
-# common functions
-def mapRange(value, inMin, inMax, outMin, outMax):
-    return outMin + (((value - inMin) / (inMax - inMin)) * (outMax - outMin))
 
-def isInteger(n):
-    try:
-        float(n)
-    except ValueError:
-        return False
-    else:
-        return float(n).isInteger()
