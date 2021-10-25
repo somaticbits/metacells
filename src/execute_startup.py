@@ -17,15 +17,16 @@ master_noise_layer = ''
 
 # initialise, setup and connect
 def onStart():
+	print('--- serialCore')
 	init()
-	print('✓ initiated')
+	print('[✓] initiated')
 	setLayers()
-	print('✓ layers set')
+	print('[✓] layers set')
 	setNoiseResolution()
-	print('✓ noise resolutions set')
+	print('[✓] noise resolutions set')
 	for layer in range(0, op_find.numRows - 1):
 		connectPars(layer)
-		print('✓ layer {0} pars connected'.format(layer))
+		print('[✓] layer {0} pars connected'.format(layer))
 
 	return
 
@@ -33,7 +34,6 @@ def onStart():
 def init():
 	for layer in range(0, op_find.numRows - 1):
 		op('base_layer_{0}/noise1'.format(layer)).par.seed.expr = 'parent(2).op(\'constant_master_seed\').par.value0'
-
 
 # collect base_layer_0 in a dictionary
 def setLayers():
@@ -55,5 +55,4 @@ def connectPars(layerNumber):
 		op_sub = str(layers['{0}_table'.format(layerNumber)][index,'op'])
 		par = str(layers['{0}_table'.format(layerNumber)][index,'par'])
 		par_name = str(layers['{0}_table'.format(layerNumber)][index,'par_name'])
-		print(index, par, par_name)
 		op(op_base + '/' + op_sub).par[par].expr = 'op(\'null_pars_noise\')[\'' + par_name + '\']'
