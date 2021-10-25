@@ -1,0 +1,14 @@
+par_name	op	par	min	max
+pos_seed	noise_pos	seed	0	9000
+cin_seed	noise_cinetic	seed	0	9000
+cin_period	noise_cinetic	period	0.01	10.0
+cin_harmon	noise_cinetic	harmon	0	20
+cin_spread	noise_cinetic	spread	0.01	20.0
+cin_gain	noise_cinetic	gain	0.01	2.0
+scale_seed	noise_scale	seed	0	9000
+scale_period	noise_scale	period	0.01	10.0
+scale_harmon	noise_scale	harmon	0	20
+scale_spread	noise_scale	spread	0.01	20.0
+scale_gain	noise_scale	gain	0.01	2.0
+geo_row	tube1	rows	2	20
+geo_scale	transform2	scale	0.1	1.0
