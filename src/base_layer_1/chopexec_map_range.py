@@ -12,7 +12,7 @@ if False:
 	# noinspection PyUnresolvedReferences
 	from _stubs import *
 
-# global variables for base_layer_0
+# global variables for base_layer_*
 table_pars = op('table_pars')
 table_pars_mapped = op('table_pars_mapped')
 
