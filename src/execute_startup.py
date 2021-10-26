@@ -10,34 +10,42 @@ if False:
 	# noinspection PyUnresolvedReferences
 	from _stubs import *
 
-op_find = op('opfind1')
+import queue
+
+# load module
+common = mod('./common')
+
+find = op('opfind1')
+content = op('container_ui/text_content')
+
 layers = {}
 
 master_noise_layer = ''
 
 # initialise, setup and connect
 def onStart():
-	print('--- serialCore')
+	content.clear()
+	content.text += 'Powering up serialCore protocol:\n'
 	init()
-	print('[✓] initiated')
+	content.text += '[✓] initialised\n'
 	setLayers()
-	print('[✓] layers set')
+	content.text += '[✓] layers set\n'
 	setNoiseResolution()
-	print('[✓] noise resolutions set')
-	for layer in range(0, op_find.numRows - 1):
+	content.text += '[✓] noise resolutions set\n'
+	for layer in range(0, find.numRows - 1):
 		connectPars(layer)
-		print('[✓] layer {0} pars connected'.format(layer))
+		content.text += '[✓] layer {0} pars connected\n'.format(layer)
 
 	return
 
 # initialise by assigning expressions to the individual seeds
 def init():
-	for layer in range(0, op_find.numRows - 1):
+	for layer in range(0, find.numRows - 1):
 		op('base_layer_{0}/noise1'.format(layer)).par.seed.expr = 'parent(2).op(\'constant_master_seed\').par.value0'
 
 # collect base_layer_0 in a dictionary
 def setLayers():
-	for layer in range(0, op_find.numRows - 1):
+	for layer in range(0, find.numRows - 1):
 		layers['{0}'.format(layer)] = op('base_layer_{0}'.format(layer))
 		layers['{0}_table'.format(layer)] = op('base_layer_{0}/table_pars'.format(layer))
 		layers['{0}_noise'.format(layer)] = op('base_layer_{0}/noise1'.format(layer))
@@ -45,7 +53,7 @@ def setLayers():
 
 # set noise resolution equivalent to number of parameters
 def setNoiseResolution():
-	for noise in range(0, op_find.numRows - 1):
+	for noise in range(0, find.numRows - 1):
 		layers['{0}_noise'.format(noise)].par.resolutionw = layers['{0}_table'.format(noise)].numRows - 1
 
 # connect all pars from table to corresponding ops
