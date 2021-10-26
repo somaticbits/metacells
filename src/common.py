@@ -3,7 +3,7 @@ if False:
 	# noinspection PyUnresolvedReferences
 	from _stubs import *
 
-# common functions
+# math functions
 def mapTableRange(channel, val, table, mapped_table):
 	for index in range(1, table.numRows):
 		if channel.name == table[index, 'par_name']:
@@ -24,3 +24,5 @@ def isInteger(n):
 		return False
 	else:
 		return float(n).is_integer()
+
+
