@@ -11,8 +11,7 @@ if False:
 	from _stubs import *
 
 # TD ops
-recordBtn = op('buttonToggle_record')
-isRecording = recordBtn.par.Value0
+isRecording = op('buttonToggle_render').par.Value0
 cachingIndicator = op('sliderHorz_caching_indicator')
 
 # variables
