@@ -19,7 +19,7 @@ from datetime import datetime
 ffmpegPath = os.path.join(os.curdir, 'ffmpeg', 'bin', 'ffmpeg.exe')
 
 # TD ops
-isRecording = op('container_ui/buttonToggle_record').par.Value0
+isRecording = op('container_ui/buttonToggle_render').par.Value0
 content = op('container_ui/text_content')
 masterSeed = op('constant_master_seed')
 exportNull = op('null_export')
@@ -63,7 +63,7 @@ def onFrameStart(frame):
 		if frame == me.time.rangeEnd:
 			if counter % 2 != 0:
 				content.text += '[✓] rendering: serialCore.{0}.mp4\n'.format(seed)
-				cmd = '{0} -y -framerate 60 -i {1}.{2}.%d.tif -c:v libx264 -crf 18 -pix_fmt yuv420p {3}.{2}.mp4'\
+				cmd = '{0} -hide_banner -y -framerate 60 -i {1}.{2}.%d.tif -c:v libx264 -crf 18 -pix_fmt yuv420p {3}.{2}.mp4'\
 					.format(ffmpegPath, os.path.join(seedFolder, name), str(seed), os.path.join(videoFolder, name))
 				subprocess.Popen(cmd, shell=False)
 				seed += 1
