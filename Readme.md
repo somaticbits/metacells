@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/somaticbits/metacells">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="logo.png" alt="Logo">
   </a>
 
 <h3 align="center">metacells</h3>
@@ -65,7 +65,7 @@ The modules creating the generative art (`base_layer`) are all structured around
 
 The master seed is set randomly at every (rendering) timeline pass of the project, hence setting random values in each local module. It also switches between each `base_layer`, creating a different rendering each time the project is ran.
 
-The project is structured as follows (under root folder `src`):
+The project is structured as follows (under root module & folder `src`):
 - `common` - a set of utilities for the project
 - `execute_startup` - runs every time the project is started:
   * Assigns the master seed to each local seed in the `base_layer`
@@ -142,7 +142,7 @@ Extension of the project would be working the in following way:
 - Copy `base_layer_template` to the latest layer version
 - Build that module out and gather all parameters that can be modulated
 - Copy `base_layer_x` folder in the project root folder (`src`)
-- Populate `table_pars.py` with chosen parameters - it has its own taxonomy (see below)
+- Populate `table_pars.py` inside that `base_layer_x` folder with chosen parameters - it has its own taxonomy (see below)
 - Once this is done, restart the project so all new parameters can be set up by the system (*Alternativately, you can restart the parameter set up by clicking the restart button in the `container_debug` module*).
 
 `table_pars.py` is a csv file that has following headers:
