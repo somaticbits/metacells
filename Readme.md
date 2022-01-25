@@ -29,23 +29,23 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
+  <a href="https://github.com/somaticbits/metacells">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">metacells</h3>
 
   <p align="center">
     project_description
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/somaticbits/metacells"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://github.com/somaticbits/metacells">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/somaticbits/metacells/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/somaticbits/metacells/issues">Request Feature</a>
   </p>
 </div>
 
@@ -84,7 +84,7 @@
 
 ![Preview image](https://github.com/d-pettersson/serialCore/blob/master/Preview.jpg)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
+Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `somaticbits`, `metacells`, `somaticbits`, `linkedin_username`, `david`, `somaticbits.com`, `metacells`, `project_description`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -117,7 +117,7 @@ An installation of TouchDesigner is necessary. Python is already included in thi
   ```bash
   git clone https://github.com/somaticbits/serialCore.git
   ```
-4. Enter the `serialCore` folder and start the project by clicking on `serialCore.toe`
+4. Enter the `metacells` folder and start the project by clicking on `serialCore.toe`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -142,7 +142,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Feature 3
     - [ ] Nested Feature
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/somaticbits/metacells/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -178,9 +178,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Your Name - [@somaticbits](https://twitter.com/somaticbits) - david@somaticbits.com.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/somaticbits/metacells](https://github.com/somaticbits/metacells)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -199,16 +199,16 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/somaticbits/metacells.svg?style=for-the-badge
+[contributors-url]: https://github.com/somaticbits/metacells/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/somaticbits/metacells.svg?style=for-the-badge
+[forks-url]: https://github.com/somaticbits/metacells/network/members
+[stars-shield]: https://img.shields.io/github/stars/somaticbits/metacells.svg?style=for-the-badge
+[stars-url]: https://github.com/somaticbits/metacells/stargazers
+[issues-shield]: https://img.shields.io/github/issues/somaticbits/metacells.svg?style=for-the-badge
+[issues-url]: https://github.com/somaticbits/metacells/issues
+[license-shield]: https://img.shields.io/github/license/somaticbits/metacells.svg?style=for-the-badge
+[license-url]: https://github.com/somaticbits/metacells/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
