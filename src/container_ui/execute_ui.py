@@ -11,11 +11,12 @@ if False:
 	from _stubs import *
 
 # TD ops
-isRecording = op('buttonToggle_render').par.Value0
-cachingIndicator = op('sliderHorz_caching_indicator')
+toggleRender = op('container_ui_infos/buttonToggle_render')
+isRecording = toggleRender.par.Value0
+cachingIndicator = op('container_ui_infos/sliderHorz_caching_indicator')
 
 # variables
-counter = 0
+counter = 1
 
 def onFrameStart(frame):
 	global counter
@@ -24,16 +25,21 @@ def onFrameStart(frame):
 		if frame == me.time.rangeEnd:
 			counter += 1
 
-		if counter % 2 == 0:
-			cachingIndicator.par.Sliderlabelnames = 'Caching...'
-		else:
-			cachingIndicator.par.Sliderlabelnames = 'Saving images...'
+		if counter % 3 != 0 and counter % 2 != 0:
+			cachingIndicator.par.Sliderlabelnames = 'caching...1/2'
+		if counter % 3 != 0 and counter % 2 == 0:
+			cachingIndicator.par.Sliderlabelnames = 'caching...2/2'
+		if counter % 3 == 0:
+			cachingIndicator.par.Sliderlabelnames = 'saving...'
 
 		cachingIndicator.par.Value0 = (1 / me.time.rangeEnd) * me.time.frame
 
 def onPlayStateChange(state):
 	global counter
-	counter = 0
+	counter = 1
+
+	if not state:
+		toggleRender.par.Value0 = 0
 
 	if isRecording:
 		cachingIndicator.par.display = 1

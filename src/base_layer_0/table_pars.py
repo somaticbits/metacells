@@ -13,3 +13,7 @@ scale_gain	noise_scale	gain	0.01	2.0
 geo_row	tube1	rows	2	20
 geo_height	tube1	height	0.3	10.0
 geo_scale	transform2	scale	0.1	1.0
+lvl_brightness	level1	brightness1	1.0	2.0
+lvl_gamma	level1	gamma1	0.5	1.5
+lvl_contrast	level1	contrast	1.0	1.45
+blur_size	blur1	size	1	32
