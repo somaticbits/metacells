@@ -31,7 +31,8 @@ def onOnToOff(channel, sampleIndex, val, prev):
 def whileOff(channel, sampleIndex, val, prev):
 	return
 
+# on value change, map values to corresponding range
+# evaluate if type is integer or float
 def onValueChange(channel, sampleIndex, val, prev):
+	common.mapTableRange(channel, val, table_pars, table_pars_mapped)
 	return
-
-
