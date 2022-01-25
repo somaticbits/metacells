@@ -65,6 +65,7 @@ The project is structured as follows (under root module & folder `src`):
   * Sets the local noise resolution to the number of parameters
   * Connects each noise pixel value to their corresponding layer via [expressions](https://docs.derivative.ca/Expression#:~:text=An%20Expression%20in%20TouchDesigner%20is,float%20list%20or%20boolean%2C%20etc.)
 - `execute_rendering` - creates three different types of assets on rendering (image sequences, video files and their corresponding sha256-hash):
+  * Removes the real-time flag to render
   * Caches the rendering for seamless looping on first timeline pass
   * Renders a still image sequence on second timeline pass
   * Renders asynchronously a video file of this image sequence
@@ -130,7 +131,7 @@ Basic usage of the project is to open the `metacells.toe` file and click on `ren
 Through it's modularity, the project can be extended with an unlimited amount of `base_layer`, allowing the random generation of multiple assets.
 
 Extension of the project would be working the in following way:
-- Copy `base_layer_template` to the latest layer version
+- Copy `_base_layer_template` and rename to the latest layer number (*ex: if last layer is `base_layer_10`, rename the new layer `base_layer_11`)
 - Build that module out and gather all parameters that can be modulated
 - Copy `base_layer_x` folder in the project root folder (`src`)
 - Populate `table_pars.py` inside that `base_layer_x` folder with chosen parameters - it has its own taxonomy (see below)
