@@ -20,8 +20,8 @@ from datetime import datetime
 ffmpegPath = os.path.join(os.curdir, 'ffmpeg', 'bin', 'ffmpeg.exe')
 
 # TD ops
-isRecording = op('container_ui/container_ui_infos/buttonToggle_render').par.Value0
-content = op('container_ui/container_ui_infos/text_content')
+isRecording = op('container_ui/container_main_ui/container_ui_infos/buttonToggle_render').par.Value0
+content = op('container_ui/container_main_ui/container_ui_infos/text_content')
 masterSeed = op('constant_master_seed')
 exportNull = op('null_export')
 

@@ -16,7 +16,7 @@ import queue
 common = mod('./common')
 
 find = op('opfind1')
-content = op('container_ui/container_ui_infos/text_content')
+content = op('container_ui/container_main_ui/container_ui_infos/text_content')
 
 layers = {}
 
@@ -25,7 +25,7 @@ master_noise_layer = ''
 # initialise, setup and connect
 def onStart():
 	content.clear()
-	content.text += 'Powering up serialCore protocol:\n'
+	content.text += 'Powering up metacells protocol:\n'
 	init()
 	content.text += '[✓] initialised\n'
 	setLayers()
