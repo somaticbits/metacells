@@ -13,6 +13,7 @@ if False:
 # reset and start timeline on render
 def onValueChange(par, prev):
 	# use par.eval() to get current value
+	print('par - onValueChange' + str(par))
 	if par:
 		me.time.frame = 0
 		me.time.play = 1

@@ -26,12 +26,11 @@ masterSeed = op('constant_master_seed')
 exportNull = op('null_export')
 
 # variables
-name = 'serialCore'
+name = 'metacells'
 counter = 1
 seed = 0
 
 def onStart():
-
 	return
 
 def onCreate():
@@ -59,13 +58,13 @@ def onFrameStart(frame):
 		if counter % 3 == 0 and counter != 1:
 			exportNull.save(os.path.join(seedFolder, name) + '.{0}.{1}.tif'.format(str(seed), str(int(frame))), createFolders = True)
 			if frame == 1.0:
-				content.text += '[✓] saving img sequence: serialCore.{0}\n'.format(seed)
+				content.text += '[✓] saving img sequence: {0}.{1}\n'.format(name,seed)
 
 		# render image sequence to video once timeline is finished on second timeline pass
 		# iterate to next seed
 		if frame == me.time.rangeEnd:
 			if counter % 3 == 0 and counter != 1:
-				content.text += '[✓] rendering: serialCore.{0}.mp4\n'.format(seed)
+				content.text += '[✓] rendering: {0}.{1}.mp4\n'.format(name,seed)
 				render = '{0} -hide_banner -y -framerate 60 -i {1}.{2}.%d.tif -c:v libx264 -crf 18 -pix_fmt yuv420p {3}.{2}.mp4'\
 					.format(ffmpegPath, os.path.join(seedFolder, name), str(seed), os.path.join(videoFolder, name))
 				subprocess.run(render, shell=False)
@@ -86,9 +85,10 @@ def onFrameEnd(frame):
 def onPlayStateChange(state):
 	global counter
 	global seed
+
 	counter = 1
 
-	if isRecording and state:
+	if isRecording and isPlaying:
 		project.realTime = False
 		content.text += 'Render protocol initiated\nTime: {0}\n'.format(datetime.now())
 	else:

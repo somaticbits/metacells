@@ -18,6 +18,9 @@ cachingIndicator = op('container_ui_infos/sliderHorz_caching_indicator')
 # variables
 counter = 1
 
+def onStart():
+	return
+
 def onFrameStart(frame):
 	global counter
 
@@ -33,15 +36,17 @@ def onFrameStart(frame):
 			cachingIndicator.par.Sliderlabelnames = 'saving...'
 
 		cachingIndicator.par.Value0 = (1 / me.time.rangeEnd) * me.time.frame
+	return
 
 def onPlayStateChange(state):
 	global counter
 	counter = 1
 
-	if not state:
-		toggleRender.par.Value0 = 0
+	# if not state:
+	# 	toggleRender.par.Value0 = 0
 
 	if isRecording:
 		cachingIndicator.par.display = 1
 	else:
 		cachingIndicator.par.display = 0
+	return
