@@ -148,11 +148,11 @@ Extension of the project would be working the in following way:
 `table_pars.py` is a csv file that has following headers:
 par_name / op / par / min / max
 
-* par_name: the name of the parameter - can be chosen freely (*ex: `pos_seed` - corresponds to the seed of the noise position module*)
-* op: the exact name of the specified module (*ex: `noise_pos` - the noise position module*)
+* `par_name`: the name of the parameter - can be chosen freely (*ex: `pos_seed` - corresponds to the seed of the noise position module*)
+* `op`: the exact name of the specified module (*ex: `noise_pos` - the noise position module*)
 * par: the exact name of the parameter inside the module (*ex: `seed` - seed parameter of the noise position module*)
-* min: the minimum range for this specific parameter (*ex: `0` - can be set as int or float types*)
-* max: the maximum range for this specific parameter (*ex: `9000` - can be set as int or float types*)
+* `min`: the minimum range for this specific parameter (*ex: `0` - can be set as int or float types*)
+* `max`: the maximum range for this specific parameter (*ex: `9000` - can be set as int or float types*)
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
