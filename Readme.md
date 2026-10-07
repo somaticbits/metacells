@@ -1,187 +1,77 @@
-<div id="top"></div>
+# metacells
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/somaticbits/metacells">
-    <img src="logo.png" alt="Logo">
-  </a>
+**A seeded generative engine in TouchDesigner: one master seed drives every layer through a declarative parameter table, and every render ships with a SHA-256 verification hash.**
 
-<h3 align="center">metacells</h3>
+![metacells render preview](Preview.jpg)
 
-  <p align="center">
-    metacells is a generative art project and framework capable of creating all the necessary assets for an off-chain NFT project.
-    <br />
-    <a href="https://github.com/somaticbits/metacells/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/somaticbits/metacells/issues">Request Feature</a>
-  </p>
-</div>
+## Why it exists
 
+metacells was built to produce a numbered series of looping video works, released as an NFT series on a platform that has since shut down. Each piece had to be unique, reproducible from its seed, and verifiable after the fact.
 
+The interesting part is the system rather than the release: randomness is controlled from one place, parameters are declared as data instead of being wired by hand, and every output can be traced back to its seed and checked against its hash.
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-</details>
+## How it works
 
+```mermaid
+flowchart LR
+    S[Master seed] --> N[Local noise<br/>one sample per parameter]
+    N --> T[Param table<br/>par_name · op · par · min · max]
+    T --> L[Layer<br/>TouchDesigner network]
+    L --> R[Render<br/>TIFF sequence → H.264 MP4]
+    R --> H[SHA-256 hash]
+```
 
+1. **Master seed.** A single `constant_master_seed` value is bound to the seed of every layer's local noise (`execute_startup.py`). Each render uses the next seed (0, 1, 2…), so any output can be regenerated from its number.
+2. **Local noise.** Each layer has a noise CHOP whose resolution is set to the number of parameters in its table, so every parameter gets its own deterministic value in `[0, 1]`.
+3. **Param table.** Each layer declares what the seed controls in a tab-separated `table_pars.py`:
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+   | par_name | op | par | min | max |
+   |---|---|---|---|---|
+   | `pos_seed` | `noise_pos` | `seed` | 0 | 9000 |
+   | `cin_period` | `noise_cinetic` | `period` | 0.01 | 1.0 |
+   | `geo_row` | `tube1` | `rows` | 2 | 20 |
+   | `blur_size` | `blur1` | `size` | 1 | 32 |
 
-![Preview image](https://github.com/d-pettersson/serialCore/blob/master/Preview.jpg)
+   On startup each row is connected to its operator parameter with an expression; on every value change the noise sample is mapped into `[min, max]` (rounded when `min` is an integer) by `common.mapTableRange`. Adding a parameter is one row, not new wiring. `base_layer_0` is the fully mapped example, with 17 parameters across noise, geometry, levels and blur.
+4. **Layer.** Each `base_layer_N` is built from a shared template (texture selector, palette selector from a generated 900-palette library, local noise, mapping tables); the rest of the network is unique to the layer.
+5. **Render.** With rendering enabled, `execute_rendering.py` turns off real-time playback, plays the timeline through so the output loops seamlessly, saves a TIFF sequence, and encodes it to a 60 fps H.264 MP4 with ffmpeg.
+6. **Hash.** ffmpeg's `hash` muxer writes a SHA-256 of the video's decoded frames next to it (`render/hashes/metacells.<seed>.sha256`), so a piece can be verified later independently of its container metadata. Then the seed increments and the next piece renders.
 
-metacells is a generative art framework built with TouchDesigner that allows fast creation of multiple video assets for minting as NFTs. Each asset is the result of controlled randomness within the framework.
-It uses the inherent modularity of TouchDesigner to create multiple components that are each responsible for one single thing.
+Output layout:
 
-The modules creating the generative art (`base_layer`) are all structured around a noise component where the local seed is being adjusted randomly by a master seed. All parameters for the various elements in the module are set in a table and set by this local noise.
+```
+render/
+  img-sequence/metacells.<seed>/metacells.<seed>.<frame>.tif
+  video/metacells.<seed>.mp4
+  hashes/metacells.<seed>.sha256
+```
 
-The master seed is set randomly at every (rendering) timeline pass of the project, hence setting random values in each local module. It also switches between each `base_layer`, creating a different rendering each time the project is ran.
+### Adding a layer
 
-The project is structured as follows (under root module & folder `src`):
-- `common` - a set of utilities for the project
-- `execute_startup` - runs every time the project is started:
-  * Assigns the master seed to each local seed in the `base_layer`
-  * Collects all `base_layer` in a dictionary for easy retrieval of parameters
-  * Sets the local noise resolution to the number of parameters
-  * Connects each noise pixel value to their corresponding layer via [expressions](https://docs.derivative.ca/Expression#:~:text=An%20Expression%20in%20TouchDesigner%20is,float%20list%20or%20boolean%2C%20etc.)
-- `execute_rendering` - creates three different types of assets on rendering (image sequences, video files and their corresponding sha256-hash):
-  * Removes the real-time flag to render
-  * Caches the rendering for seamless looping on first timeline pass
-  * Renders a still image sequence on second timeline pass
-  * Renders asynchronously a video file of this image sequence
-  * And ends with creating a sha256-hash of that video file for asset verification at a later stage
-- `base_col_pal` - generates a library of 900 different color palettes for easy access
-- `container_ui` - hosts all necessary components to create the control ui for render purposes
-- `base_layer_x` - contains all necessary elements to create a generative art piece:
-  * A `select2` texture selector which pulls the `base_layer_0` output texture
-  * A `select3` texture selector which pulls the color palette generated by `base_col_pal`
-  * A `noise1` which is the local noise module which sets all parameters in the module in a random manner
-  * A set of tables and mathematical expressions to map the range of the `noise1` range [0-1] to a specific range needed by the module
-  * Those elements above are contained in every `base_layer` as a template - the rest of the components are created locally and are different for each module
+1. Copy `_base_layer_template` in the project and rename it to the next number (e.g. `base_layer_7`).
+2. Build the network and pick the parameters worth modulating.
+3. Create `src/base_layer_7/table_pars.py` with one row per parameter.
+4. Restart the project, or press restart in `container_debug`, to reconnect all parameters.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+## Run it
 
+Requirements: Windows x64, [TouchDesigner 2021.16270](https://download.derivative.ca/TouchDesigner.2021.16270.exe) or later (the free non-commercial licence works, capped at 1280×1280), and ffmpeg.
 
+```bash
+git clone https://github.com/somaticbits/metacells.git
+cd metacells
+```
 
-### Built With
+1. Download the [ffmpeg release essentials build](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip), unzip it into the repo and rename the folder to `ffmpeg` (the renderer calls `ffmpeg/bin/ffmpeg.exe`).
+2. Open `metacells.toe`.
+3. Click **render**. Renders land in `render/` (gitignored).
 
-* [TouchDesigner](https://derivative.ca/)
-* [Python](https://www.python.org/)
+macOS may work with path changes in `execute_rendering.py`; it has not been tested.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+## Status
 
+Built 2021–22 in TouchDesigner 2021.x on Windows. Kept as a reference project; not actively maintained.
 
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-A good knowledge of the TouchDesigner environment, and its python scripting language is recommended if the usage exceeds the simple task of rendering the assets.
-
-An installation of TouchDesigner is necessary. Python is already included in this framework (3.7 at the time of writing). This project was created using TD version 2021.17270. It will work on higher versions, the inverse might not necessarily be true.
-
-This project is released for the Win-x64 platform. It might work with some adjustments on an OSX platform.
-
-### Installation
-
-1. Download [TouchDesigner](https://download.derivative.ca/TouchDesigner.2021.16270.exe) and install it.
-2. Create an account in order to generate a free licence key (*free licences are restricted to non-commercial usage, and have a max texture resolution of 1280x1280*)
-3. Clone this repo
-  ```bash
-  git clone https://github.com/somaticbits/metacells.git
-  ```
-4. Enter the `metacells` folder
-5. Download [ffmpeg](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip) to this folder
-6. Unarchive the downloaded zip file and rename the folder `ffmpeg`
-7. Start the project by clicking on `metacells.toe`
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Basic usage of the project is to open the `metacells.toe` file and click on `render`.
-
-Through it's modularity, the project can be extended with an unlimited amount of `base_layer`, allowing the random generation of multiple assets.
-
-Extension of the project would be working the in following way:
-- Copy `_base_layer_template` and rename to the latest layer number (*ex: if last layer is `base_layer_10`, rename the new layer `base_layer_11`)
-- Build that module out and gather all parameters that can be modulated
-- Copy `base_layer_x` folder in the project root folder (`src`)
-- Populate `table_pars.py` inside that `base_layer_x` folder with chosen parameters - it has its own taxonomy (see below)
-- Once this is done, restart the project so all new parameters can be set up by the system (*Alternativately, you can restart the parameter set up by clicking the restart button in the `container_debug` module*).
-
-`table_pars.py` is a csv file that has following headers:
-par_name / op / par / min / max
-
-* `par_name`: the name of the parameter - can be chosen freely (*ex: `pos_seed` - corresponds to the seed of the noise position module*)
-* `op`: the exact name of the specified module (*ex: `noise_pos` - the noise position module*)
-* `par`: the exact name of the parameter inside the module (*ex: `seed` - seed parameter of the noise position module*)
-* `min`: the minimum range for this specific parameter (*ex: `0` - can be set as int or float types*)
-* `max`: the maximum range for this specific parameter (*ex: `9000` - can be set as int or float types*)
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-David Pettersson - [@somaticbits](https://twitter.com/somaticbits) - david@somaticbits.com
-
-Project Link: [https://github.com/somaticbits/metacells](https://github.com/somaticbits/metacells)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/somaticbits/metacells.svg?style=for-the-badge
-[contributors-url]: https://github.com/somaticbits/metacells/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/somaticbits/metacells.svg?style=for-the-badge
-[forks-url]: https://github.com/somaticbits/metacells/network/members
-[stars-shield]: https://img.shields.io/github/stars/somaticbits/metacells.svg?style=for-the-badge
-[stars-url]: https://github.com/somaticbits/metacells/stargazers
-[issues-shield]: https://img.shields.io/github/issues/somaticbits/metacells.svg?style=for-the-badge
-[issues-url]: https://github.com/somaticbits/metacells/issues
-[license-shield]: https://img.shields.io/github/license/somaticbits/metacells.svg?style=for-the-badge
-[license-url]: https://github.com/somaticbits/metacells/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: images/screenshot.png
+[MIT](LICENSE).
