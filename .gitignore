@@ -83,3 +83,7 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 .idea/
+
+# TD backups and numbered autosaves
+Backup/
+*.[0-9]*.toe
