@@ -72,6 +72,8 @@ macOS may work with path changes in `execute_rendering.py`; it has not been test
 
 Built 2021–22 in TouchDesigner 2021.x on Windows. Kept as a reference project; not actively maintained.
 
+Related: [tezos-art-oracles](https://github.com/somaticbits/tezos-art-oracles), my 2022 thesis project on recording physical installations' sensor data on Tezos.
+
 ## License
 
 [MIT](LICENSE).
